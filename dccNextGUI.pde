@@ -9,6 +9,7 @@ final int buttonSizeY       = 100 ;
 final int buttonTextSize    =  30 ;
 
 String receivedText = "";
+String errorText = "";
 
 
 void settings()
@@ -62,7 +63,15 @@ void setup()
         }
     }
 
-    inputStream = dccNext.getInputStream() ;
+    try
+    {
+        inputStream = dccNext.getInputStream() ;
+    }
+    catch (NullPointerException e)
+    {
+        errorText = "NO DCC NEXT DETECTED\r\n CONNECT A DCC NEXT\r\n AND RESTART" ;
+        println("NO DCC NEXT DETECTED, CONNECT A DCC NEXT AND RESTART") ;
+    }
 }
 
 void draw()
@@ -103,7 +112,14 @@ void draw()
         }
     }
     catch (IOException e ) {;}
-
+    catch ( NullPointerException e ) {;}
+    
+    if( errorText != "")
+    {
+      textSize(20);
+      textAlign(LEFT, TOP);
+      text( errorText, width-390, 10) ;
+    }
 }
 
 void mouseClicked()                                   // if any mouse button is clicked
